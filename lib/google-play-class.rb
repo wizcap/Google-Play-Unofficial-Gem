@@ -99,3 +99,61 @@ class PlayResult
 		end
 	end
 end
+
+class SearchResult
+	attr_accessor :id, :type, :title, :price, :rating, :description, :thumbnail
+
+	def initialize(query,type,list)
+		@id=""
+		@type=type
+		@title=""
+		@price=""
+		@rating=""
+		@description=""
+		@thumbnail=""
+		fillSearchData(query,type,list)
+	end
+
+	def fillSearchData(id,type,list)
+		get_id(list)
+		get_title(list)
+		get_price(list)
+		get_rating(list)
+		get_description(list)
+		get_thumbnail(list)
+	end
+
+	def get_id(doc)
+		@id = doc['data-docid']
+	end
+
+	def get_title(doc)
+		if doc.css('a.title').length != 0
+			@title = doc.css('a.title').text
+		end
+	end
+
+	def get_price(doc)
+		if doc.css('span.buy-button-price').length != 0
+			@price = doc.css('span.buy-button-price').text
+		end
+	end
+
+	def get_rating(doc)
+		if doc.css('div.ratings-wrapper .ratings').length != 0
+			@rating = doc.css('div.ratings-wrapper .ratings')[0]['title']
+		end
+	end
+
+	def get_description(doc)
+		if doc.css('div.description').length != 0
+			@description = doc.css('div.description').text
+		end
+	end
+
+	def get_thumbnail(doc)
+		if doc.css('.thumbnail-wrapper .thumbnail img').length != 0
+			@thumbnail = doc.css('.thumbnail-wrapper .thumbnail img')[0]['src']
+		end
+	end
+end
