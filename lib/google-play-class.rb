@@ -142,12 +142,72 @@ class SearchResult
 	def get_rating(doc)
 		if doc.css('div.ratings-wrapper .ratings').length != 0
 			@rating = doc.css('div.ratings-wrapper .ratings')[0]['title']
+		else
+			@rating = "None"
 		end
 	end
 
 	def get_description(doc)
 		if doc.css('div.description').length != 0
 			@description = doc.css('div.description').text
+		end
+	end
+
+	def get_thumbnail(doc)
+		if doc.css('.thumbnail-wrapper .thumbnail img').length != 0
+			@thumbnail = doc.css('.thumbnail-wrapper .thumbnail img')[0]['src']
+		end
+	end
+end
+
+class TopResult
+	attr_accessor :id, :type, :title, :price, :artist, :explicit, :thumbnail
+
+	def initialize(type,list)
+		@id=""
+		@type=type
+		@title=""
+		@price=""
+		if type == "music" then @artist="" end
+		@explicit=""
+		@thumbnail=""
+		fillSearchData(type,list)
+	end
+
+	def fillSearchData(type,list)
+		get_id(list)
+		get_title(list)
+		get_price(list)
+		get_artist(list)
+		get_explicit(list)
+		get_thumbnail(list)
+	end
+
+	def get_id(doc)
+		@id = doc['data-docid']
+	end
+
+	def get_title(doc)
+		if doc.css('a.title').length != 0
+			@title = doc.css('a.title')[0]['title']
+		end
+	end
+
+	def get_price(doc)
+		if doc.css('span.buy-button-price').length != 0
+			@price = doc.css('span.buy-button-price').text
+		end
+	end
+
+	def get_artist(doc)
+		if doc.css('span.attribution div a').length != 0
+			@artist = doc.css('span.attribution div a').text
+		end
+	end
+
+	def get_explicit(doc)
+		if doc.css('.explicit').length != 0
+			@explicit = 1
 		end
 	end
 
