@@ -8,4 +8,12 @@ A gem to pull movie, music and book data from Google Play, it was built with Nok
 
 # How to install
 
-Once the gem is in a stable state with more features I'll be throwing it up to Rubygems so you'll be able to download it
+	gem install google-play
+
+## Examples
+	require 'rubygems'
+	require 'google-play'
+
+	GooglePlay.top("movie").each{ |movie|
+		puts movie.title
+	}

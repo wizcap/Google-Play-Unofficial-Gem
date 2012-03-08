@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'uri'
 require 'nokogiri'
-require './google-play-class.rb'
+require 'google-play-class.rb'
 
 # TODO: Build whitelist of types to search for and check type on submit. Also add pagination
 module GooglePlay
