@@ -21,57 +21,58 @@ class PlayResult
 	end
 
 	def fillPlayData(id,type,title)
-		doc = Nokogiri::HTML(open("https://play.google.com/store/#{type}/details?id=#{id}"))
-		get_price(doc)
-		get_rating(doc)
-		get_description(doc)
-		get_thumbnail(doc)
-		get_actors(doc)
-		get_lengthtime(doc)
-		get_contentrating(doc)
-		get_genre(doc)
-		get_related(doc)
+		@@doc = Nokogiri::HTML(open("https://play.google.com/store/#{type}/details?id=#{id}"))
+		get_price()
+		get_rating()
+		get_description()
+		get_thumbnail()
+		get_actors()
+		get_lengthtime()
+		get_contentrating()
+		get_genre()
+		get_related()
 	end
-	def get_title(doc)
+	
+	def get_title()
 		if @title == ""
-			@title = doc.css('div.doc-header-content h1.doc-header-title').text
+			@title = @@doc.css('div.doc-header-content h1.doc-header-title').text
 		end
 	end
-	def get_price(doc)
-		if doc.css('.buy-wrapper .buy-border a.buy-link .buy-button-price').length != 0
-			@price = doc.css('.buy-wrapper .buy-border a.buy-link .buy-button-price')[0].text
-		end
-	end
-
-	def get_rating(doc)
-		if doc.css('.doc-details-ratings-price div div.ratings').length != 0
-			@rating = doc.css('.doc-details-ratings-price div div.ratings')[0]['title']
+	def get_price()
+		if @@doc.css('.buy-wrapper .buy-border a.buy-link .buy-button-price').length != 0
+			@price = @@doc.css('.buy-wrapper .buy-border a.buy-link .buy-button-price')[0].text
 		end
 	end
 
-	def get_description(doc)
-		if doc.css('div#doc-original-text').length != 0
-			@description = doc.css('div#doc-original-text').text
+	def get_rating()
+		if @@doc.css('.doc-details-ratings-price div div.ratings').length != 0
+			@rating = @@doc.css('.doc-details-ratings-price div div.ratings')[0]['title']
 		end
 	end
 
-	def get_thumbnail(doc)
-		if doc.css('div.doc-banner-icon img').length != 0
-			@thumbnail = doc.css('div.doc-banner-icon img')[0]['src']
+	def get_description()
+		if @@doc.css('div#doc-original-text').length != 0
+			@description = @@doc.css('div#doc-original-text').text
 		end
 	end
 
-	def get_actors(doc)
-		if doc.css('td.credit-cell span[itemprop=actors] a span').length != 0
-			doc.css('td.credit-cell span[itemprop=actors] a span').each{ |value|
+	def get_thumbnail()
+		if @@doc.css('div.doc-banner-icon img').length != 0
+			@thumbnail = @@doc.css('div.doc-banner-icon img')[0]['src']
+		end
+	end
+
+	def get_actors()
+		if @@doc.css('td.credit-cell span[itemprop=actors] a span').length != 0
+			@@doc.css('td.credit-cell span[itemprop=actors] a span').each{ |value|
 				@actors << value.text.to_s
 			}
 		end
 	end
 
-	def get_lengthtime(doc)
-		if doc.css('dl.doc-metadata-list dd').length != 0
-			doc.css('dl.doc-metadata-list dd').each{ |value|
+	def get_lengthtime()
+		if @@doc.css('dl.doc-metadata-list dd').length != 0
+			@@doc.css('dl.doc-metadata-list dd').each{ |value|
 				if value.text.to_s =~ /minutes/
 					@lengthtime = value.text.to_s
 				end
@@ -79,21 +80,21 @@ class PlayResult
 		end
 	end
 
-	def get_contentrating(doc)
-		if doc.css('dd[itemprop=contentRating]').length != 0
-			@contentrating = doc.css('dd[itemprop=contentRating]').text
+	def get_contentrating()
+		if @@doc.css('dd[itemprop=contentRating]').length != 0
+			@contentrating = @@doc.css('dd[itemprop=contentRating]').text
 		end
 	end
 
-	def get_genre(doc)
-		if doc.css('ul.doc-genres .doc-genre-link a:first-child').length != 0
-			@genre = doc.css('ul.doc-genres .doc-genre-link a:first-child').text
+	def get_genre()
+		if @@doc.css('ul.doc-genres .doc-genre-link a:first-child').length != 0
+			@genre = @@doc.css('ul.doc-genres .doc-genre-link a:first-child').text
 		end
 	end
 
-	def get_related(doc)
-		if doc.css('div#related-list ul.snippet-list li div div.details a.title').length != 0
-			doc.css('div#related-list ul.snippet-list li div div.details a.title').each{ |value|
+	def get_related()
+		if @@doc.css('div#related-list ul.snippet-list li div div.details a.title').length != 0
+			@@doc.css('div#related-list ul.snippet-list li div div.details a.title').each{ |value|
 				@related << value.text.to_s
 			}
 		end

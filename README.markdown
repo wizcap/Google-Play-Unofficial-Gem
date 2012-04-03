@@ -6,6 +6,10 @@ A gem to pull movie, music and book data from Google Play, it was built with Nok
 
 * Nokogiri
 
+## Known issues
+
+* The gem is useless if you or your server is located outside the US since the play store is not accessible in those locations
+
 # How to install
 
 	gem install google-play
